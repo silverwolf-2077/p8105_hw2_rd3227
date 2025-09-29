@@ -99,10 +99,18 @@ unepm_df =
       )) |> 
 
 # arrange according to time
-  arrange(year, month)
+  arrange(year, month) 
 
 ```
 
+Join the datasets.
+
+```{r}
+merge_df = 
+  left_join(pols_df, snp_df, by = c("year", "month")) |> 
+  left_join(unepm_df, by = c("year", "month"))
+
+```
 
 
 
