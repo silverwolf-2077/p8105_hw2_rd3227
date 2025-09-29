@@ -1,0 +1,12 @@
+---
+title: "p8105_hw2_rd3227"
+author: "Ruihan Ding"
+date: "2025-09-29"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+
