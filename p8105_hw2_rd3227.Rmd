@@ -120,9 +120,9 @@ Read and clean the Mr. Trash Wheel sheet.
 
 ```{r}
 mtw_df = 
-  read_excel("202409TrashWheel.xlsx", 
+  read_excel("202509TrashWheel.xlsx", 
              sheet = "Mr. Trash Wheel", 
-             range = "A2:N655", 
+             range = "A2:N710", 
              na = c(""),
              ) |> 
   janitor::clean_names() |> 
@@ -138,9 +138,9 @@ Read and clean the Professor Trash Wheel sheet.
 
 ```{r}
 ptw_df = 
-  read_excel("202409TrashWheel.xlsx", 
+  read_excel("202509TrashWheel.xlsx", 
              sheet = "Professor Trash Wheel", 
-             range = "A2:M123", 
+             range = "A2:M135", 
              na = c(""),
              ) |> 
   janitor::clean_names() |> 
@@ -154,10 +154,10 @@ Read and clean the Gwynnda Trash Wheel sheet.
 
 ```{r}
 gtw_df = 
-  read_excel("202409TrashWheel.xlsx", 
-             sheet = "Gwynnda Trash Wheel", 
-             range = "A2:L266", 
-             na = c(""),
+  read_excel("202509TrashWheel.xlsx", 
+             sheet = "Gwynns Falls Trash Wheel", 
+             range = "A2:L352", 
+             na = c("")
              ) |> 
   janitor::clean_names() |> 
   filter(!is.na(dumpster)) |> 
