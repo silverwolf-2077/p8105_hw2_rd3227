@@ -123,10 +123,11 @@ mtw_df =
   read_excel("202409TrashWheel.xlsx", 
              sheet = "Mr. Trash Wheel", 
              range = "A2:N655", 
-             na = c("")
+             na = c(""),
              ) |> 
   janitor::clean_names() |> 
   filter(!is.na(dumpster)) |> 
+  mutate(year = as.integer(year)) |>
   mutate(
     sports_balls = as.integer(round(sports_balls))) |> 
   mutate(trash_wheel = "mr_trash_wheel")
@@ -138,14 +139,13 @@ Read and clean the Professor Trash Wheel sheet.
 ```{r}
 ptw_df = 
   read_excel("202409TrashWheel.xlsx", 
-             sheet = "Mr. Trash Wheel", 
+             sheet = "Professor Trash Wheel", 
              range = "A2:M123", 
-             na = c("")
+             na = c(""),
              ) |> 
   janitor::clean_names() |> 
   filter(!is.na(dumpster)) |> 
-  mutate(
-    sports_balls = as.integer(round(sports_balls))) |> 
+  mutate(year = as.integer(year)) |>
   mutate(trash_wheel = "professor_trash_wheel")
 
 ```
@@ -155,12 +155,13 @@ Read and clean the Gwynnda Trash Wheel sheet.
 ```{r}
 gtw_df = 
   read_excel("202409TrashWheel.xlsx", 
-             sheet = "Mr. Trash Wheel", 
+             sheet = "Gwynnda Trash Wheel", 
              range = "A2:L266", 
-             na = c("")
+             na = c(""),
              ) |> 
   janitor::clean_names() |> 
   filter(!is.na(dumpster)) |> 
+  mutate(year = as.integer(year)) |>
   mutate(trash_wheel = "gwynnda_trash_wheel")
 
 ```
@@ -174,8 +175,25 @@ tw_df =
 
 ```
 
+The combined dataset includes `r nrow(tw_df)` rows × `r ncol(tw_df)` columns of observations on the dumpster number, date of collection, amount of total litter and litter type for Mr. Trash Wheel, Professor Trash Wheel and Gwynnda Trash Wheel.  
 
+```{r}
+weight_ptw = 
+  ptw_df |> 
+  pull(weight_tons) |>
+  sum(na.rm = TRUE)
 
+cb_gtw = 
+  tw_df |>
+  filter(trash_wheel == "gwynnda_trash_wheel", year == 2022, month == "June") |>
+  pull(cigarette_butts) |> 
+  sum(na.rm = TRUE)
+
+```
+
+The total weight of trash collected by Professor Trash Wheel is `r weight_ptw` tons.
+
+The total number of cigarette butts collected by Gwynnda in June of 2022 is `r cb_gtw`.
 
 
 
