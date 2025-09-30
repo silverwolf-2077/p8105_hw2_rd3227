@@ -128,7 +128,8 @@ mtw_df =
   janitor::clean_names() |> 
   filter(!is.na(dumpster)) |> 
   mutate(
-    sports_balls = as.integer(round(sports_balls)))
+    sports_balls = as.integer(round(sports_balls))) |> 
+  mutate(trash_wheel = "mr_trash_wheel")
 
 ```
 
@@ -144,7 +145,8 @@ ptw_df =
   janitor::clean_names() |> 
   filter(!is.na(dumpster)) |> 
   mutate(
-    sports_balls = as.integer(round(sports_balls)))
+    sports_balls = as.integer(round(sports_balls))) |> 
+  mutate(trash_wheel = "professor_trash_wheel")
 
 ```
 
@@ -158,10 +160,19 @@ gtw_df =
              na = c("")
              ) |> 
   janitor::clean_names() |> 
-  filter(!is.na(dumpster))
+  filter(!is.na(dumpster)) |> 
+  mutate(trash_wheel = "gwynnda_trash_wheel")
 
 ```
 
+Combine datasets.
+
+```{r}
+tw_df =
+  bind_rows(mtw_df, ptw_df, gtw_df) |> 
+  select(trash_wheel, everything())
+
+```
 
 
 
