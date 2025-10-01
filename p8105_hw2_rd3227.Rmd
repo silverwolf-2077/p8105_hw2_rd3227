@@ -236,6 +236,17 @@ final_df =
   
 ```
 
+The final dataset has `r nrow(final_df)` observations. `r nrow(distinct(final_df, zip_code))` unique ZIP codes and `r filter(final_df, !is.na(neighborhood)) |> distinct(neighborhood) |> nrow()` unique neighborhoods are included.
+
+```{r}
+missing_zip = 
+  anti_join(zip_df, zillow_df, by = "zip_code") |> 
+  distinct(zip_code) |> 
+  mutate(zip_code = as.character(zip_code))
+  
+```
+
+`r nrow(missing_zip)` ZIP codes appear in the ZIP code dataset but not in the Zillow Rental Price dataset, such as `r head(missing_zip$zip_code)`.
 
 
 
