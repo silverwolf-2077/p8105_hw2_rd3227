@@ -203,9 +203,6 @@ Tidy the Zip Codes dataset.
 zip_df = 
   read_csv("zillow_data/Zip Codes.csv", na = c("NA")) |> 
   janitor::clean_names() |> 
-  mutate(
-    date = as.Date(file_date, format = "%m/%d/%y")
-    ) |> 
   select(-file_date)
 
 ```
@@ -226,10 +223,18 @@ zillow_df =
     date = as.Date(date, format = "%Y_%m_%d"),
     county = str_remove(county_name, " County")
   ) |> 
-  select(everything(), zip_code = region_name, -county_name)
+  select(everything(), zip_code = region_name, -county_name, -state_name)
 
 ```
 
+Merge them
+
+```{r}
+final_df = 
+  left_join(zillow_df, zip_df) |> 
+  select(region_id, region_type, size_rank, zip_code, state, state_fips, city, county, county_fips, county_code, neighborhood, metro, date, zori)
+  
+```
 
 
 
