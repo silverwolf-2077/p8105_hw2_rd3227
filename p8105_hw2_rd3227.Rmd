@@ -195,5 +195,45 @@ The total weight of trash collected by Professor Trash Wheel is `r weight_ptw` t
 
 The total number of cigarette butts collected by Gwynnda in June of 2022 is `r cb_gtw`.
 
+# Problem 3
+
+Tidy the Zip Codes dataset.
+
+```{r}
+zip_df = 
+  read_csv("zillow_data/Zip Codes.csv", na = c("NA")) |> 
+  janitor::clean_names() |> 
+  mutate(
+    date = as.Date(file_date, format = "%m/%d/%y")
+    ) |> 
+  select(-file_date)
+
+```
+
+Tidy the Zillow dataset.
+
+```{r}
+zillow_df = 
+  read_csv("zillow_data/Zip_zori_uc_sfrcondomfr_sm_month_NYC.csv", na = c("NA")) |> 
+  janitor::clean_names() |> 
+  pivot_longer(
+    cols = starts_with("x"),
+    names_to = "date",
+    names_prefix = "x",
+    values_to = "zori"
+  ) |> 
+  mutate(
+    date = as.Date(date, format = "%Y_%m_%d"),
+    county = str_remove(county_name, " County")
+  ) |> 
+  select(everything(), zip_code = region_name, -county_name)
+
+```
+
+
+
+
+
+
 
 
