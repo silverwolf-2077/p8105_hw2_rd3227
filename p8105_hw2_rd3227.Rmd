@@ -9,6 +9,7 @@ output: github_document
 library(tidyverse)
 library(readxl)
 library(haven)
+library(lubridate)
 ```
 
 # Problem 1
@@ -232,7 +233,8 @@ Merge them
 ```{r}
 final_df = 
   left_join(zillow_df, zip_df) |> 
-  select(region_id, region_type, size_rank, zip_code, state, state_fips, city, county, county_fips, county_code, neighborhood, metro, date, zori)
+  select(region_id, region_type, size_rank, zip_code, state, state_fips, city, county, county_fips, county_code, neighborhood, metro, date, zori) |> 
+  arrange(region_id, date)
   
 ```
 
@@ -248,6 +250,34 @@ missing_zip =
 
 `r nrow(missing_zip)` ZIP codes appear in the ZIP code dataset but not in the Zillow Rental Price dataset, such as `r head(missing_zip$zip_code)`.
 
+Make a table showing ZIP codes with largest drop in price from January 2020 to 2021.
+
+```{r}
+fluc_df = 
+  final_df |> 
+  filter(
+   month(date) == 1,
+   year(date) %in% c(2020, 2021),
+   !is.na(zip_code),
+   !is.na(zori)
+  ) |> 
+  select(zip_code, county, neighborhood, date, zori) |> 
+  pivot_wider(
+    names_from = date,
+    values_from = zori
+  ) |> 
+  mutate(
+    drop = `2020-01-31` - `2021-01-31`
+  ) |> 
+  filter(!is.na(drop)) |> 
+  arrange(desc(drop))
+
+top10_drop = 
+  fluc_df |> 
+  slice_head(n = 10)
+
+knitr::kable(top10_drop)
+```
 
 
 
